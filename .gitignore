@@ -34,3 +34,10 @@
 # Extensions
 *.docx
 *.pdf
+
+# VS Code Settings
+.vscode
+
+# Pybind11 Build folders
+**/build/
+**/*.egg-info/*
