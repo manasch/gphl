@@ -1,6 +1,10 @@
 #include <iostream>
+#include <map>
+#include <stack>
 #include <unordered_set>
 #include <unordered_map>
+#include <vector>
+#include<bits/stdc++.h>
 
 template <typename T, typename W>
 class Edge {
@@ -55,10 +59,12 @@ class Graph {
         }
 
         void displayEdges() {
-            for (auto& [src, edges_map] : edges) {
-                for (auto& [dest, edge] : edges_map) {
-                    std::cout << src << " --> " << dest << " W: " << edge.getWeight() << std::endl;
+            for (const auto& [src, edges_map] : edges) {
+                std::cout << src << " --> ";
+                for (const auto& [dest, edge] : edges_map) {
+                    std::cout << dest << "(" << edge.getWeight() << ")";
                 }
+                std::cout << std::endl;
             }
         }
         // bool hasCycle() const;
@@ -70,25 +76,80 @@ class Graph {
         // std::vector<double> katzCentrality(double alpha, double beta) const;
         // std::vector<Edge<T, W>> primMST() const;
         // std::vector<Edge<T, W>> kruskalMST() const;
-        // std::vector<T> iterativeDFS(const T& start) const;
+        std::vector<T> iterativeDFS(const T& start) const {
+            if (nodes.find(start) == nodes.end()) {
+                std::cerr << "The source node doesn't exist in the graph" << std::endl;
+                exit(1);
+            }
+
+            T node;
+            std::stack<T> stk;
+            std::unordered_map<T, bool> visited;
+            std::vector<T> result;
+
+            stk.push(start);
+            while (!stk.empty()) {
+                node = stk.top();
+                stk.pop();
+
+                // std::cout << "In " << node << std::endl;
+                if (!visited[node]) {
+                    result.push_back(node);
+                    visited[node] = true;
+                }
+
+                for (auto it = edges.at(node).rbegin(); it != edges.at(node).rend(); ++it) {
+                    const auto& [dest, _] = *it;
+                    if (!visited[dest]) {
+                        stk.push(dest);
+                    }
+                }
+            }
+            return result;
+        }
         // std::vector<T> uniformCostSearch(const T& start, const T& goal) const;
         // std::vector<T> aStarSearch(const T& start, const T& goal, std::function(T, T)> heuristic) const;
     
     private:
         bool directed;
         std::unordered_set<T> nodes;
-        std::unordered_map<T, std::unordered_map<T, Edge<T, W>>> edges;
+        std::unordered_map<T, std::map<T, Edge<T, W>>> edges;
 };
 
 int main() {
     Graph<int, int> g = Graph<int, int>(false);
     g.addNode(1);
     g.addNode(2);
+    g.addNode(3);
+    g.addNode(4);
+    g.addNode(5);
+    g.addNode(6);
+    g.addNode(7);
+    g.addNode(8);
+    g.addNode(9);
 
-    std::cout << "The nodes in the graph are: " << std::endl;
-    g.displayNodes();
+    // std::cout << "The nodes in the graph are: " << std::endl;
+    // g.displayNodes();
+
+    g.addEdge(1, 2);
+    g.addEdge(1, 7);
+    g.addEdge(2, 3);
+    g.addEdge(2, 4);
+    g.addEdge(4, 5);
+    g.addEdge(5, 6);
+    g.addEdge(7, 8);
+    g.addEdge(7, 9);
 
     std::cout << "Graph:" << std::endl;
-    g.addEdge(1, 2);
     g.displayEdges();
+
+    std::cout << "DFS: " << std::endl;
+    std::vector<int> res = g.iterativeDFS(4);
+
+    for (auto x : res) {
+        std::cout << x << " ";
+    }
+    std::cout << std::endl;
+
+    return 0;
 }
