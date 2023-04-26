@@ -1,3 +1,3 @@
-import addition_test
+import addition
 
-print(addition_test.add(1, 2))
+print(addition.add(1, 2))
