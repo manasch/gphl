@@ -4,7 +4,11 @@
 #include <unordered_set>
 #include <unordered_map>
 #include <vector>
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
+#include <pybind11/pybind11.h>
+#include <pybind11/stl.h>
+
+namespace py = pybind11;
 
 template <typename T, typename W>
 class Edge {
@@ -152,4 +156,23 @@ int main() {
     std::cout << std::endl;
 
     return 0;
+}
+
+PYBIND11_MODULE(graphlib, m) {
+    m.doc() = "A generic graph library.";
+
+    py::class_<Graph<int, int>>(m, "Graph")
+        .def(py::init<bool>())
+        .def("addNode", &Graph<int, int>::addNode)
+        .def("displayNodes", &Graph<int, int>::displayNodes)
+        .def("addEdge", &Graph<int, int>::addEdge)
+        .def("displayEdges", &Graph<int, int>::displayEdges)
+        .def("iterativeDFS", &Graph<int, int>::iterativeDFS);
+
+    // py::class_<Graph<std::string, int>>(m, "Graph")
+    //     .def(py::init<bool>())
+    //     .def("addNode", &Graph<std::string, int>::addNode)
+    //     .def("displayNodes", &Graph<std::string, int>::displayNodes)
+    //     .def("addEdge", &Graph<std::string, int>::addEdge)
+    //     .def("displayEdges", &Graph<std::string, int>::displayEdges);
 }

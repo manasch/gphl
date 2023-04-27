@@ -41,3 +41,4 @@
 # Pybind11 Build folders
 **/build/
 **/*.egg-info/*
+**/dist/
