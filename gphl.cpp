@@ -74,8 +74,22 @@ class Graph {
         // void completeEdges();
         // std::vector<std::vector<T>> connectedComponents() const;
         // std::vector<double> katzCentrality(double alpha, double beta) const;
-        // std::vector<Edge<T, W>> primMST() const;
+
+        std::vector<Edge<T, W>> primMST() const {
+            if (nodes.size() == 0 || edges.size() == 0) {
+                std::cerr << "Either there are no nodes or no edges in the graph" << std::endl;
+                exit(1);
+            }
+
+            std::unordered_map<T, bool> selected;
+            std::vector<Edge<T, W>> result;
+
+            selected.insert(std::make_pair())
+            return result;
+        }
+
         // std::vector<Edge<T, W>> kruskalMST() const;
+
         std::vector<T> iterativeDFS(const T& start) const {
             if (nodes.find(start) == nodes.end()) {
                 std::cerr << "The source node doesn't exist in the graph" << std::endl;
@@ -92,7 +106,6 @@ class Graph {
                 node = stk.top();
                 stk.pop();
 
-                // std::cout << "In " << node << std::endl;
                 if (!visited[node]) {
                     result.push_back(node);
                     visited[node] = true;
@@ -131,14 +144,14 @@ int main() {
     // std::cout << "The nodes in the graph are: " << std::endl;
     // g.displayNodes();
 
-    g.addEdge(1, 2);
-    g.addEdge(1, 7);
-    g.addEdge(2, 3);
-    g.addEdge(2, 4);
-    g.addEdge(4, 5);
-    g.addEdge(5, 6);
-    g.addEdge(7, 8);
-    g.addEdge(7, 9);
+    g.addEdge(1, 2, 5);
+    g.addEdge(1, 7, 1);
+    g.addEdge(2, 3, 8);
+    g.addEdge(2, 4, 9);
+    g.addEdge(4, 5, 4);
+    g.addEdge(5, 6, 3);
+    g.addEdge(7, 8, 3);
+    g.addEdge(7, 9, 1);
 
     std::cout << "Graph:" << std::endl;
     g.displayEdges();
