@@ -5,7 +5,7 @@ __version__ = "0.0.2"
 
 ext_modules = [
     Pybind11Extension("graphlib",
-    ["test_gphl.cpp"],
+    ["./test_gphl.cpp"],
     define_macros = [("VERSION_INFO", __version__)]
     ),
 ]

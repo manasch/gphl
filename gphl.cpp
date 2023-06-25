@@ -4,11 +4,12 @@
 #include <unordered_set>
 #include <unordered_map>
 #include <vector>
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
 
 template <typename T, typename W>
 class Edge {
     public:
+        Edge() : src(T()), dest(T()), weight(W()) {}
         Edge(const T& src, const T& dest, const W& weight) : src(src), dest(dest), weight(weight) {}
 
         T getSource() const {
@@ -21,6 +22,19 @@ class Edge {
 
         W getWeight() const {
             return this->weight;
+        }
+
+        bool operator!() {
+            if (src == T() && dest == T() && weight == W()) {
+                return false;
+            }
+            return true;
+        }
+
+        void operator=(Edge<T, W> otherEdge) {
+            this->src = otherEdge.getSource();
+            this->dest = otherEdge.getDestination();
+            this->weight = otherEdge.getWeight();
         }
 
     private:
@@ -50,12 +64,27 @@ class Graph {
             }
 
             Edge<T, W> newEdge(src, dest, weight);
+            if (!minEdge) {
+                minEdge = newEdge;
+            }
+            else {
+                if (newEdge.getWeight() < minEdge.getWeight()) {
+                    minEdge = newEdge;
+                }
+            }
+
             edges[src].insert(std::make_pair(dest, newEdge));
 
             if (!directed) {
                 Edge<T, W> newBackEdge(dest, src, weight);
                 edges[dest].insert(std::make_pair(src, newBackEdge));
             }
+        }
+
+        void displayMinEdge() {
+            std::cout << "Source: " << minEdge.getSource() << std::endl;
+            std::cout << "Destination: " << minEdge.getDestination() << std::endl;
+            std::cout << "Weight: " << minEdge.getWeight() << std::endl;
         }
 
         void displayEdges() {
@@ -81,10 +110,11 @@ class Graph {
                 exit(1);
             }
 
-            std::unordered_map<T, bool> selected;
+            std::unordered_map<T, bool> selected(nodes.size(), false);
             std::vector<Edge<T, W>> result;
 
-            selected.insert(std::make_pair())
+            // Choosing the first node given by the nodes set
+            typename std::unordered_set<T>::iterator v = nodes.begin();
             return result;
         }
 
@@ -125,6 +155,7 @@ class Graph {
     
     private:
         bool directed;
+        Edge<T, W> minEdge;
         std::unordered_set<T> nodes;
         std::unordered_map<T, std::map<T, Edge<T, W>>> edges;
 };
@@ -144,8 +175,11 @@ int main() {
     // std::cout << "The nodes in the graph are: " << std::endl;
     // g.displayNodes();
 
+    g.displayMinEdge();
     g.addEdge(1, 2, 5);
+    g.displayMinEdge();
     g.addEdge(1, 7, 1);
+    g.displayMinEdge();
     g.addEdge(2, 3, 8);
     g.addEdge(2, 4, 9);
     g.addEdge(4, 5, 4);
